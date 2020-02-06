@@ -1,26 +1,38 @@
 import React from "react";
 import "./App.css";
-import Button from "@material-ui/core/Button";
-import Blog from './exampleBlog/Blog'
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
+  BrowserRouter as Router
 } from "react-router-dom";
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Markdown from './exampleBlog/Markdown';
+import SteamCurrentlyPlayed from './steamCurrentlyPlayed';
 
-console.log(process.env.REACT_APP_API_KEY);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-function App(props) {
-  return (
-    <Router>
-      <div>
+  componentDidCatch(error, info) {
+    // You can also log the error to an error reporting service
+    console.log(error);
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true, error };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>
+        Error has occurred. {this.props.error}
       </div>
-    </Router>
-  );
+    }
+    return (
+      <Router>
+        <SteamCurrentlyPlayed steamDetails={this.props.steamDetails} />
+      </Router>
+    );
+  }
 }
 
 export default App;
