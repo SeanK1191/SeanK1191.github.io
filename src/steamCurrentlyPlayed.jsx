@@ -1,22 +1,11 @@
-import React, { useEffect, useState} from 'react';
-import { User } from './services/steam';
+import React from 'react';
+import { useSteamStatus } from './hooks/steamHooks';
 
 const SteamCurrentlyPlayed = (props) => {
-    let [steamSummary, setSteamSummary] = useState('Test');
-
-    useEffect(() => {
-        async function getSteam() {
-            const response = await User.GetUserSummary(props.steamDetails.id);
-
-            setSteamSummary(response);
-        }
-
-        getSteam();
-    }, []);
-
+    const steamSummary = useSteamStatus(props.steamDetails.id);
 
     return <div>
-        Steam Game: {steamSummary}
+        Steam Status: {steamSummary.personastate}
     </div>
 }
 

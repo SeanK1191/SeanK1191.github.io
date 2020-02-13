@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router
 } from "react-router-dom";
 import SteamCurrentlyPlayed from './steamCurrentlyPlayed';
+import SteamMostRecentGame from './steamMostRecentGame';
 
 class App extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class App extends React.Component {
     return (
       <Router>
         <SteamCurrentlyPlayed steamDetails={this.props.steamDetails} />
+        <SteamMostRecentGame steamDetails={this.props.steamDetails} />
       </Router>
     );
   }
