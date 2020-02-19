@@ -4,19 +4,19 @@ import { User } from '../services/steam';
 function useSteamStatus(steamId) {
   const [steamStatus, setSteamStatus] = useState({ personastate: '' });
 
-  async function getSteam() {
-    const playerSummary = await User.GetUserSummary(steamId);
+  useEffect(() => {
+    async function getPlayerSummary() {
+       const playerSummary = await User.GetUserSummary(steamId) 
+       setSteamStatus(playerSummary);
+    };
 
-    setSteamStatus(playerSummary);
-  }
+    getPlayerSummary();
+  }, [steamId])
 
   useEffect(() => {
-    getSteam();
-  }, [])
-
-  useEffect(() => {
-    var interval = setInterval(() => {
-        getSteam();
+    var interval = setInterval(async () => {
+      const playerSummary = await User.GetUserSummary(steamId);
+      setSteamStatus(_ => playerSummary);
     }, 30000);
 
     return () => {
@@ -32,18 +32,19 @@ function useSteamMostRecentlyPlayed(steamId) {
       name: ''
     });
 
-    async function getSteamMostRecentlyPlayed() {
-      const mostRecentGame = await User.GetUserMostRecentGame(steamId);
-      setSteamMostRecentlyPlayed(mostRecentGame);
-    };
+    useEffect(() => {
+      async function getMostRecentlyPlayed() {
+        const mostRecentlyPlayedGame = await User.GetUserMostRecentGame(steamId);
+        setSteamMostRecentlyPlayed(_ => mostRecentlyPlayedGame);
+      };
+
+      getMostRecentlyPlayed();
+    }, [steamId])
 
     useEffect(() => {
-      getSteamMostRecentlyPlayed()
-    }, [])
-
-    useEffect(() => {
-      var interval = setInterval(() => {
-        getSteamMostRecentlyPlayed();
+      var interval = setInterval(async () => {
+        const mostRecentGame = await User.GetUserMostRecentGame(steamId);
+        setSteamMostRecentlyPlayed(_ => mostRecentGame);
       }, 30000);
   
       return () => {

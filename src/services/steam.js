@@ -4,12 +4,6 @@ const version1 = 'v1';
 const version2 = 'v2';
 const apiKey = process.env.REACT_APP_API_KEY;
 
-const steamPersonaState = {
-    1: 'online',
-    3: 'away',
-    0: 'offline',
-}
-
 const convertSteamStatusToString = (userStatus, playerSummary) => {
     let userSummary = '';
     switch (userStatus) {
