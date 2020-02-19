@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSteamStatus } from './hooks/steamHooks';
+import Typography from '@material-ui/core/Typography'
 
 const SteamCurrentlyPlayed = (props) => {
     const steamSummary = useSteamStatus(props.steamDetails.id);
 
-    return <div>
+    return <Typography variant='body1' align='center' gutterBottom>        
         Steam Status: {steamSummary.personastate}
-    </div>
+    </Typography>
 }
 
 export default SteamCurrentlyPlayed;
