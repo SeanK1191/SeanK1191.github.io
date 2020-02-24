@@ -1,14 +1,24 @@
 import React from "react";
-import {
-  BrowserRouter as Router
-} from "react-router-dom";
-import SteamCurrentlyPlayed from './steamCurrentlyPlayed';
-import SteamMostRecentGame from './steamMostRecentGame';
+import { BrowserRouter as Router } from "react-router-dom";
+import SteamCurrentlyPlayed from "./steamCurrentlyPlayed";
+import SteamMostRecentGame from "./steamMostRecentGame";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { orange } from "@material-ui/core/colors";
+import Button from '@material-ui/core/Button';
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Paper from '@material-ui/core/Paper';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+
+    this.state = { 
+      hasError: false,
+      checked: false,
+      paletteType: 'light'
+    };
   }
 
   componentDidCatch(error, info) {
@@ -21,17 +31,49 @@ class App extends React.Component {
     return { hasError: true, error };
   }
 
+  changeTheme = () => {
+    this.setState({
+      checked: !this.state.checked,
+      paletteType: !this.state.checked === true ? 'dark' : 'light'
+    })
+  }
+
   render() {
     if (this.state.hasError) {
-      return <div>
-        Error has occurred. {this.props.error}
-      </div>
+      return <div>Error has occurred. {this.props.error}</div>;
     }
+
+    const theme = createMuiTheme({
+      palette: {
+        type: this.state.paletteType
+      }
+    });
+
     return (
-      <Router>
-        <SteamCurrentlyPlayed steamDetails={this.props.steamDetails} />
-        <SteamMostRecentGame steamDetails={this.props.steamDetails} />
-      </Router>
+      <MuiThemeProvider theme={theme}>
+        <Router>
+          <Paper>
+          <Button variant="contained" color="primary">
+            Primary
+          </Button>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.checked}
+                onChange={this.changeTheme}
+                value="checkedB"
+                color="primary"
+              />
+            }
+            label="Primary"
+          />
+          </Paper>
+        
+          <SteamCurrentlyPlayed steamDetails={this.props.steamDetails} />
+          <SteamMostRecentGame steamDetails={this.props.steamDetails} />
+        </Router>
+      </MuiThemeProvider>
+      
     );
   }
 }
